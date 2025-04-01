@@ -9,6 +9,7 @@ from rclpy.duration import Duration
 from rclpy.subscription import Subscription
 from nav_msgs.msg import Odometry
 from std_msgs.msg import String
+from ros2_template_package.example_class import Drone
 
 
 class SubExample(Node):
@@ -19,8 +20,8 @@ class SubExample(Node):
             String, 'adele', self.listen_callback, 10)
 
         self.timer_period: float = 0.5
-        self.timer = self.create_timer(
-            self.timer_period, self.listen_callback)
+        # self.timer = self.create_timer(
+        #     self.timer_period, self.listen_callback)
 
     def listen_callback(self, msg: String) -> None:
         self.get_logger().info(f"Received: {msg.data}")
@@ -31,10 +32,11 @@ class SubExample(Node):
 def main(args=None):
     rclpy.init(args=args)
     sub_example = SubExample()
-
+    # drone = Drone(name='jake')
     while rclpy.ok():
         try:
-            rclpy.spin_once(sub_example, timeout_sec=0.1)
+            rclpy.spin_once(sub_example, timeout_sec=0.5)
+            # drone.go_brr()
 
         except KeyboardInterrupt:
             break
