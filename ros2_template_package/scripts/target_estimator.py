@@ -1,4 +1,3 @@
-
 #!/usr/bin/env python3
 import rclpy
 import math
@@ -6,9 +5,11 @@ import numpy as np
 
 from rclpy.node import Node
 from rclpy.duration import Duration
+from typing import List
 from rclpy.publisher import Publisher
 from rclpy.subscription import Subscription
 from nav_msgs.msg import Odometry
+from ros2_template_package.config import GOAL_STATE
 from rclpy.timer import Rate
 from rclpy.timer import Timer
 
@@ -26,27 +27,20 @@ class TargetEstimator(Node):
         self.target_publisher: Publisher = self.create_publisher(
             Odometry, 'target_position', 10)
 
-        self.drone_subscriber: Subscription = self.create_subscription(
-            Odometry, 'drone_position', self.update_target, 10)
-
-        self.target_location:np.array = np.array([500, 100, 50])
+        self.target_location: List[float] = GOAL_STATE
         self.timer_period: float = 0.05
         self.timer = self.create_timer(
             self.timer_period, self.publish_target)
-
-    def update_target(self, msg: Odometry) -> None:
-        # Update target based on drone position
-        pass
 
     def publish_target(self) -> None:
         """
         """
         msg = Odometry()
-        msg.pose.pose.position.x = self.target_location[0] + np.random.normal(0, 0.1)
-        msg.pose.pose.position.y = self.target_location[1] + np.random.normal(0, 0.1)
-        msg.pose.pose.position.z = self.target_location[2] + np.random.normal(0, 0.1)
+        std_dev:float = 2.0
+        msg.pose.pose.position.x = self.target_location[0] + np.random.normal(0, std_dev)
+        msg.pose.pose.position.y = self.target_location[1] + np.random.normal(0, std_dev)
+        msg.pose.pose.position.z = self.target_location[2] + np.random.normal(0, std_dev)
         self.target_publisher.publish(msg)
-
 
 def main(args=None):
     rclpy.init(args=args)

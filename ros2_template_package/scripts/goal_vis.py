@@ -13,7 +13,6 @@ Not a good idea to put it in this package need to put it in the rviz_drone packa
 but have to grab the random seeded obstacles from the ros_mpc package, future to do
 """
 
-
 class GoalViz(Node):
     def __init__(self):
         super().__init__("obstacle_visualizer")
@@ -67,8 +66,12 @@ def main()->None:
     rclpy.init()
     goal_viz = GoalViz()
 
+    show_once = False
     while rclpy.ok():
-        goal_viz.show_goal()
+        if not show_once:
+            goal_viz.show_goal()
+            show_once = True
+        # goal_viz.show_goal()
 
 
     rclpy.shutdown()
