@@ -49,6 +49,7 @@ ament_python_install_package(${PROJECT_NAME})
 install(PROGRAMS
   scripts/pub_example.py
   scripts/sub_example.py
+  scripts/goal_vis.py
   # scripts/client_member_function.py
   # scripts/service_member_function.py
   DESTINATION lib/${PROJECT_NAME}

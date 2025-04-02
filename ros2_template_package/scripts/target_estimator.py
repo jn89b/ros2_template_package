@@ -29,6 +29,7 @@ class TargetEstimator(Node):
         self.drone_subscriber: Subscription = self.create_subscription(
             Odometry, 'drone_position', self.update_target, 10)
 
+        self.target_location:np.array = np.array([500, 100, 50])
         self.timer_period: float = 0.05
         self.timer = self.create_timer(
             self.timer_period, self.publish_target)
@@ -38,10 +39,12 @@ class TargetEstimator(Node):
         pass
 
     def publish_target(self) -> None:
+        """
+        """
         msg = Odometry()
-        msg.pose.pose.position.x = 5
-        msg.pose.pose.position.y = 5
-        msg.pose.pose.position.z = 5
+        msg.pose.pose.position.x = self.target_location[0] + np.random.normal(0, 0.1)
+        msg.pose.pose.position.y = self.target_location[1] + np.random.normal(0, 0.1)
+        msg.pose.pose.position.z = self.target_location[2] + np.random.normal(0, 0.1)
         self.target_publisher.publish(msg)
 
 
