@@ -17,7 +17,7 @@ find_package(ament_cmake REQUIRED)
 find_package(ament_cmake_python REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rclpy REQUIRED)
-
+find_package(std_msgs REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
 
 # rosidl_generate_interfaces(${PROJECT_NAME}
@@ -32,16 +32,19 @@ find_package(rosidl_default_generators REQUIRED)
 #   # "srv/getGSInfo.srv"
 #  )
 
-# # Include Cpp "include" directory
-# include_directories(include)
-# # Create Cpp executable
-# add_executable(cpp_node src/cpp_node.cpp)
-# ament_target_dependencies(cpp_node rclcpp)
-# # Install Cpp executables
-# install(TARGETS
-#   cpp_node
-#   DESTINATION lib/${PROJECT_NAME}
-# )
+# Include Cpp "include" directory
+include_directories(include)
+# Create Cpp executable
+add_executable(main_pub src/main_pub.cpp src/minimal_publisher.cpp)
+ament_target_dependencies(main_pub
+    rclcpp
+    std_msgs
+)
+# Install Cpp executables
+install(TARGETS
+  main_pub
+  DESTINATION lib/${PROJECT_NAME}
+)
 
 # Install Python modules
 ament_python_install_package(${PROJECT_NAME})
